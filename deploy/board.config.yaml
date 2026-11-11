@@ -1,0 +1,11 @@
+# 板端运行配置 (RK3588S)
+# 通过环境变量启用: WS_SCRCPY_CONFIG=/path/to/board.config.yaml node ./index.js
+# 字段含义见 src/types/Configuration.d.ts
+
+# 只跟踪 Android (板子不接 iOS)
+runGoogTracker: true
+runApplTracker: false
+
+server:
+  - secure: false
+    port: 8000

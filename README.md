@@ -39,6 +39,27 @@ npm install
 npm start
 ```
 
+## 板端部署 (RK3588S)
+
+本 fork 额外提供 `deploy/`, 用于在无桌面环境的 ARM 开发板上常驻运行:
+
+```bash
+./deploy/board-start.sh          # 默认 8000 端口
+./deploy/board-start.sh 8081    # 指定端口
+```
+
+脚本做的事: 缺 `node_modules` 就 `npm install`, 缺 `dist/` 就 `npm run dist`,
+然后以 `deploy/board.config.yaml` 为配置在 `dist/` 内启动。
+
+两点和 upstream 不同, 容易踩:
+
+1. **`--port` 与 `--ua` 都不是有效参数。** `dist/index.js` 里没有任何 `process.argv` 解析代码,
+   node 会静默忽略。端口只能通过 `WS_SCRCPY_CONFIG=<yaml>` 设置, 否则永远是默认 8000。
+2. **必须在 `dist/` 里启动。** `index.js` 依赖同目录的 `package.json` 与 `public/`,
+   在仓库根目录跑 `node ./index.js` 会报 `Cannot find module`。
+
+板端依赖: `node`、`adb`(在 PATH 里)、`ffmpeg`(部分播放器需要)。
+
 ## Supported features
 
 ### Android
